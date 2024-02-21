@@ -1,3 +1,6 @@
+import React from 'react';
+import { Layout } from '@/src/sharing/feature-layout';
+
 export default function Home() {
-  return <>안녕</>;
+  return <Layout />;
 }
