@@ -1,0 +1,16 @@
+.button {
+  @include column-flexbox();
+  gap: 1rem;
+  background-color: $skyblue-200;
+  border-radius: 0.6rem;
+  padding: 2rem;
+  width: 17.6rem;
+
+  &-icon {
+    @include text-style(2.4, 700);
+  }
+
+  &-content {
+    @include text-style(2.4, 700, $white);
+  }
+}

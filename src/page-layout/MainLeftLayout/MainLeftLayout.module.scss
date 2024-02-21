@@ -1,0 +1,22 @@
+.main-left {
+  @include column-flexbox();
+  height: 100%;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &-logo {
+    margin-bottom: 5rem;
+  }
+
+  &-input {
+    margin-bottom: 15rem;
+  }
+
+  &-buttons {
+    @include flexbox();
+    gap: 6.8rem;
+  }
+}
