@@ -1,0 +1,12 @@
+GET http://localhost:3000/api/main
+
+###
+POST http://localhost:3000/api/main
+Content-Type: application/json
+
+{
+  "imgUrl": "https://i.ibb.co/GdLKjSF/quokka.jpg","content": "과거부터 현재까지 어떤 길을 선택하고 걸어왔는지 한 눈에 보기 프로젝트 및 스킬들 즉시 기록하기","email": "han.kim0904@gmail.com","social": [{"site":"github","url":"https://github.com/hankim0904"},{"site":"velog","url":"https://velog.io/@cielo_hello/posts"}]
+}
+
+###
+GET http://localhost:3000/api/main/65aa7f165ba0bbf0305e46b9

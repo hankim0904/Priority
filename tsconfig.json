@@ -17,6 +17,12 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/sharing/feature-layout/index.js",
+    "src/page-layout/MainLayout/index.js"
+  ],
   "exclude": ["node_modules"]
 }
