@@ -22,7 +22,7 @@
     "**/*.ts",
     "**/*.tsx",
     "src/sharing/feature-layout/index.js",
-    "src/page-layout/MainLayout/index.js"
+    "src/page-layout/MainkRightLayout/index.js"
   ],
   "exclude": ["node_modules"]
 }
