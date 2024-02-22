@@ -6,26 +6,15 @@ import classNames from 'classnames/bind';
 const cx = classNames.bind(styles);
 
 interface LayoutProps {
-  priorityLogo: ReactNode;
-  todoInputBar: ReactNode;
-  writeButton: ReactNode;
-  historyButton: ReactNode;
+  header: ReactNode;
+  buttons: ReactNode;
 }
 
-export const MainLeftLayout = ({
-  priorityLogo,
-  todoInputBar,
-  writeButton,
-  historyButton,
-}: LayoutProps) => {
+export const MainLeftLayout = ({ header, buttons }: LayoutProps) => {
   return (
     <div className={cx('main-left')}>
-      <header className={cx('main-left-logo')}>{priorityLogo}</header>
-      <main className={cx('main-left-input')}>{todoInputBar}</main>
-      <p className={cx('main-left-buttons')}>
-        {writeButton}
-        {historyButton}
-      </p>
+      {header}
+      {buttons}
     </div>
   );
 };

@@ -8,7 +8,7 @@ const cx = classNames.bind(styles);
 export const PriorityLogo = () => {
   return (
     <div className={cx('logo')}>
-      <Image fill src="/icons/logo-priority.svg" alt="priority 로고" />
+      <Image fill priority src="/icons/logo-priority.svg" alt="priority 로고" />
     </div>
   );
 };

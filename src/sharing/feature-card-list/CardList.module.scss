@@ -1,0 +1,15 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); // 3개의 열을 동일한 너비로 생성
+  gap: 20px;
+}
+
+.todo-list {
+  background-color: $gray-300;
+  padding: 5rem;
+}
+
+.observer {
+  height: 0.1rem;
+  flex-shrink: 0;
+}

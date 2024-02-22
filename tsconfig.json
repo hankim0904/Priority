@@ -21,7 +21,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/sharing/feature-layout/index.js",
+    "src/sharing/ui-layout/index.js",
     "src/page-layout/MainLeftLayout/index.js"
   ],
   "exclude": ["node_modules"]

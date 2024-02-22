@@ -1,38 +1,18 @@
 import React from 'react';
-import { Layout } from '@/src/sharing/feature-layout';
+import { Layout } from '@/src/sharing/ui-layout';
 import { MainLeftLayout } from '@/src/page-layout/MainLeftLayout';
-import { PriorityLogo } from '@/src/main/PriorityLogo/PriorityLogo';
-import { Input } from '@/src/sharing/ui-input';
-import {
-  BUTTON_CONTENT,
-  BUTTON_ICON,
-  INPUT_PLACEHOLDER,
-} from '@/src/sharing/util/constant';
-import { Button } from '@/src/sharing/ui-button/Button';
+import { Header } from '@/src/main/Header/Header';
+import { Buttons } from '@/src/main/Buttons/Buttons';
+import { CardList } from '@/src/sharing/feature-card-list/CardList';
+import { MainRightLayout } from '@/src/page-layout/MainRightLayout/MainRightLayout';
 
 export default function Home() {
   return (
     <Layout
       leftComponent={
-        <MainLeftLayout
-          priorityLogo={<PriorityLogo />}
-          todoInputBar={<Input placeholder={INPUT_PLACEHOLDER.todo} />}
-          writeButton={
-            <Button
-              type="button"
-              icon={BUTTON_ICON.write}
-              content={BUTTON_CONTENT.write}
-            />
-          }
-          historyButton={
-            <Button
-              type="button"
-              icon={BUTTON_ICON.history}
-              content={BUTTON_CONTENT.history}
-            />
-          }
-        />
+        <MainLeftLayout header={<Header />} buttons={<Buttons />} />
       }
+      rightComponent={<MainRightLayout cardList={<CardList />} />}
     />
   );
 }
