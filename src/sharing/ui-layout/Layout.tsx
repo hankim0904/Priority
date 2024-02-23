@@ -13,8 +13,8 @@ interface LayoutProps {
 export const Layout = ({ rightComponent, leftComponent }: LayoutProps) => {
   return (
     <div className={cx('layout')}>
-      <section className={cx('layout-box')}>{rightComponent}</section>
       <section className={cx('layout-box')}>{leftComponent}</section>
+      <section className={cx('layout-box')}>{rightComponent}</section>
     </div>
   );
 };

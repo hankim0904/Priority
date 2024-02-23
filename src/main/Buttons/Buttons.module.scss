@@ -1,0 +1,4 @@
+.buttons {
+  @include flexbox();
+  gap: 6.8rem;
+}
