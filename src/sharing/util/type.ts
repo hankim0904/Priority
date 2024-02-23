@@ -12,12 +12,19 @@ export interface Todo {
   backgroundColor: string;
 }
 
-export interface TodoPages {
+export interface TodoPage {
   todos: Todo[];
   cursorIndex: string | null;
+  totalCount: number;
+}
+
+export interface TodoPages {
+  pages: TodoPage[];
+  pageParams: (number | null)[];
 }
 
 export interface ChangedTodo {
   todoId: string;
+  oldIndex: number;
   newIndex: number;
 }
