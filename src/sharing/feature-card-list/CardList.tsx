@@ -68,6 +68,8 @@ export const CardList = () => {
           todos.splice(todos.indexOf(movedTodo), 1);
           todos.splice(changedTodo.newIndex, 0, movedTodo);
         }
+
+        console.log(todos);
         return { ...page, todos };
       });
 
@@ -121,7 +123,7 @@ export const CardList = () => {
           todos.map((todo, todoIndex) => (
             <Droppable
               droppableId={`${calculateIndex(todoPageIndex, todoIndex)}`}
-              key={todo._id}
+              key={`${calculateIndex(todoPageIndex, todoIndex)}`}
             >
               {(provided) => (
                 <div

@@ -13,4 +13,4 @@ export const BUTTON_CONTENT = {
   HISTORY: 'History',
 };
 
-export const TODO_PER_PAGE = 2;
+export const TODO_PER_PAGE = 10;
