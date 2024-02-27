@@ -1,0 +1,10 @@
+.menubar {
+  @include flexbox();
+  gap: 3rem;
+
+  &-img {
+    position: relative;
+    width: 4rem;
+    height: 4rem;
+  }
+}

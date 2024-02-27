@@ -6,17 +6,24 @@ export const postTodo = async (newTodo: NewTodo) => {
   return response.data;
 };
 
-export const getTodoList = async (cursorIndex: unknown) => {
-  const response = await axiosInstance.get('/todo', {
-    params: { size: TODO_PER_PAGE, cursorIndex: cursorIndex },
-  });
+export const getTodoList = async () => {
+  const response = await axiosInstance.get('/todo');
 
   return response.data;
 };
 
 export const patchTodo = async (changedTodo: ChangedTodo) => {
-  const { todoId, newIndex } = changedTodo;
-  const response = await axiosInstance.patch(`/todo/${todoId}`, { newIndex });
+  const { todoId, newIndex, isDone } = changedTodo;
+  const response = await axiosInstance.patch(`/todo/${todoId}`, {
+    newIndex,
+    isDone,
+  });
+
+  return response.data;
+};
+
+export const deleteTodo = async (todoId: string) => {
+  const response = await axiosInstance.delete(`/todo/${todoId}`);
 
   return response.data;
 };

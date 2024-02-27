@@ -1,0 +1,7 @@
+.main-right {
+  height: 100%;
+  overflow: auto;
+}
+.main-right::-webkit-scrollbar {
+  display: none;
+}/*# sourceMappingURL=MainRightLayout.module.css.map */

@@ -1,99 +1,78 @@
-import { useRef } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  useInfiniteQuery,
-  useMutation,
-  useQueryClient,
-} from '@tanstack/react-query';
-import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
+  DragDropContext,
+  DragStart,
+  DropResult,
+  Droppable,
+} from 'react-beautiful-dnd';
 
 import styles from './CardList.module.scss';
 import classNames from 'classnames/bind';
 
 import { Card } from '../ui-card/Card';
-import { calculateIndex } from './calculateIndex';
 import {
   ChangedTodo,
   QUERY_KEYS,
-  Todo,
-  TodoPage,
-  TodoPages,
+  TodoListData,
   getTodoList,
   patchTodo,
-  useIntersectionObserver,
 } from '../util';
+import { useEffect, useRef, useState } from 'react';
 
 const cx = classNames.bind(styles);
 
 export const CardList = () => {
   const queryClient = useQueryClient();
-  const bottomObserver = useRef<HTMLDivElement | null>(null);
+  const [activeId, setActiveId] = useState<string>('');
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const {
-    data: todoPagesInfo,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
+    data: todoListData,
     isLoading,
     isError,
-  } = useInfiniteQuery<TodoPage>({
+  } = useQuery<TodoListData>({
     queryKey: [QUERY_KEYS.TODOS],
-    queryFn: ({ pageParam }) => getTodoList(pageParam),
-    initialPageParam: null,
-    getNextPageParam: (lastPage) => lastPage.cursorIndex,
+    queryFn: getTodoList,
   });
-  const todoPages = todoPagesInfo?.pages ?? [];
 
-  const fetchNextCardList = () => {
-    if (!isFetchingNextPage && hasNextPage) {
-      fetchNextPage();
-    }
-  };
-  useIntersectionObserver(bottomObserver, fetchNextCardList, { threshold: 0 });
+  const todoList = todoListData?.todos ?? [];
 
   const patchTodoMutation = useMutation({
     mutationFn: (changedTodo: ChangedTodo) => patchTodo(changedTodo),
     onMutate: async (changedTodo: ChangedTodo) => {
       await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.TODOS] });
-      const prevTodos = queryClient.getQueryData<TodoPages>([QUERY_KEYS.TODOS]);
+      const prevTodoListData = queryClient.getQueryData<TodoListData>([
+        QUERY_KEYS.TODOS,
+      ]);
+      const prevTodoList = prevTodoListData?.todos ?? [];
 
-      if (!prevTodos) return;
-
-      const newTodos = prevTodos.pages.map((page) => {
-        const todos = [...page.todos];
-        if (todos.some((todo) => todo._id === changedTodo.todoId)) {
-          const movedTodo = todos.find(
-            (todo) => todo._id === changedTodo.todoId
-          );
-          if (!movedTodo) return;
-          todos.splice(todos.indexOf(movedTodo), 1);
-          todos.splice(changedTodo.newIndex, 0, movedTodo);
-        }
-
-        console.log(todos);
-        return { ...page, todos };
-      });
+      const newTodoList = [...prevTodoList];
+      const movedTodo = newTodoList.splice(changedTodo.oldIndex, 1)[0];
+      newTodoList.splice(changedTodo.newIndex, 0, movedTodo);
 
       queryClient.setQueryData([QUERY_KEYS.TODOS], {
-        ...prevTodos,
-        pages: newTodos,
+        ...prevTodoListData,
+        todos: newTodoList,
       });
-      return { prevTodos };
+      return { prevTodoListData };
     },
-    onError: (
-      error: Error,
-      variables: ChangedTodo,
-      context:
-        | {
-            prevTodos: TodoPages;
-          }
-        | undefined
-    ) => {
-      queryClient.setQueryData([QUERY_KEYS.TODOS], context?.prevTodos);
+    onError: (err, newTodo, context) => {
+      queryClient.setQueryData([QUERY_KEYS.TODOS], context?.prevTodoListData);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.TODOS] });
     },
   });
 
-  const handleDragEnd = async (result: DropResult) => {
+  const hadleDragStart = (result: DragStart) => {
+    const { draggableId } = result;
+
+    setActiveId(draggableId);
+  };
+
+  const handleDragEnd = (result: DropResult) => {
     const { source, destination, draggableId } = result;
+
     if (
       !destination ||
       (source.droppableId === destination.droppableId &&
@@ -105,46 +84,59 @@ export const CardList = () => {
     const sourceIndex = source.index;
     const destinationIndex = destination.index;
 
-    await patchTodoMutation.mutateAsync({
+    patchTodoMutation.mutate({
       todoId: draggableId,
       oldIndex: sourceIndex,
       newIndex: destinationIndex,
     });
   };
 
+  useEffect(() => {
+    const handleDocumentClick = (e: MouseEvent) => {
+      if (cardRef.current && !cardRef.current.contains(e.target as Node)) {
+        setActiveId('');
+      }
+    };
+    document.addEventListener('click', handleDocumentClick);
+
+    return () => {
+      document.removeEventListener('click', handleDocumentClick);
+    };
+  }, [setActiveId]);
+
   if (isLoading) return '로딩 중입니다...';
 
   if (isError) return '에러가 발생했습니다.';
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <div className={cx('container')}>
-        {todoPages.map(({ todos }, todoPageIndex) =>
-          todos.map((todo, todoIndex) => (
-            <Droppable
-              droppableId={`${calculateIndex(todoPageIndex, todoIndex)}`}
-              key={`${calculateIndex(todoPageIndex, todoIndex)}`}
+    <DragDropContext onDragEnd={handleDragEnd} onDragStart={hadleDragStart}>
+      <div className={cx('container')} ref={cardRef}>
+        <Droppable droppableId="droppableList">
+          {(provided) => (
+            <div
+              className={cx('todo-list')}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
             >
-              {(provided) => (
-                <div
-                  className={cx('todo-list')}
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  <Card
-                    id={todo._id}
-                    index={todo.index}
-                    title={todo.title}
-                    color={todo.color}
-                    backgroundColor={todo.backgroundColor}
-                  />
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          ))
-        )}
-        <span className={cx('observer')} ref={bottomObserver}></span>
+              {todoList.map((todo, index) => (
+                <Card
+                  id={todo._id}
+                  key={todo._id}
+                  index={index}
+                  title={todo.title}
+                  color={todo.color}
+                  backgroundColor={todo.backgroundColor}
+                  activeId={activeId}
+                  todoListLength={todoList.length}
+                  isDone={todo.isDone}
+                  setActiveId={setActiveId}
+                  patchTodoMutation={patchTodoMutation.mutate}
+                />
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
       </div>
     </DragDropContext>
   );

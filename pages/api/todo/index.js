@@ -14,7 +14,9 @@ export default async function handler(req, res) {
         query.index = { $gt: parseInt(cursorIndex, 10) };
       }
 
-      const todos = await Todo.find(query).limit(limit).sort({ index: 1 });
+      const todos = await Todo.find(query)
+        .limit(limit)
+        .sort({ isDone: 1, index: 1 });
       const totalCount = await Todo.countDocuments();
 
       res.json({
@@ -26,10 +28,10 @@ export default async function handler(req, res) {
       break;
 
     case 'POST':
-      const maxIndex = await Todo.find()
+      const maxIndex = await Todo.find({ isDone: false })
         .sort('-index')
         .limit(1)
-        .then((todos) => (todos.length > 0 ? todos[0].index : 0));
+        .then((todos) => (todos.length > 0 ? todos[0].index : -1));
 
       const newTodo = await Todo.create({ ...req.body, index: maxIndex + 1 });
 

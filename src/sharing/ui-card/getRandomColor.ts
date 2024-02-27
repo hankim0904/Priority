@@ -1,29 +1,26 @@
-function getColorAverage(hexColor: string) {
-  const r = parseInt(hexColor.slice(0, 2), 16);
-  const g = parseInt(hexColor.slice(2, 4), 16);
-  const b = parseInt(hexColor.slice(4, 6), 16);
-  return (r + g + b) / 3;
-}
+let currentIndex = 0;
 
 export function getRandomColor(opacity: number) {
-  const MAX_HEX_COLOR_VALUE: number = 16777215;
-  const COLOR_AVERAGE_THRESHOLD: number = 128; // 색상 평균 임계값 설정
-  let randomColor: string, backgroundColor: string;
+  const colorList = [
+    '73a8dc',
+    'a2d7c5',
+    'a6df8e',
+    'fccd7f',
+    'f59b9b',
+    'e18ebc',
+    '9b74b3',
+  ];
 
-  do {
-    randomColor = Math.floor(Math.random() * MAX_HEX_COLOR_VALUE)
-      .toString(16)
-      .padStart(6, '0');
-    backgroundColor = `#${randomColor}${Math.floor(opacity * 255)
-      .toString(16)
-      .padStart(2, '0')}`;
-  } while (
-    randomColor === 'ffffff' ||
-    randomColor === '000000' ||
-    backgroundColor === '#ffffff' ||
-    backgroundColor === '#000000' ||
-    getColorAverage(randomColor) >= COLOR_AVERAGE_THRESHOLD // 색상 평균이 임계값 이상인 경우 다시 색상 생성
-  );
+  // 현재 인덱스에 해당하는 색상을 선택합니다.
+  const selectedColor = colorList[currentIndex];
 
-  return { color: `#${randomColor}`, backgroundColor };
+  // 배경색을 생성합니다.
+  const backgroundColor = `#${selectedColor}${Math.floor(opacity * 255)
+    .toString(16)
+    .padStart(2, '0')}`;
+
+  // 인덱스를 증가시키거나, 필요한 경우에 리셋합니다.
+  currentIndex = (currentIndex + 1) % colorList.length;
+
+  return { color: `#${selectedColor}`, backgroundColor };
 }
