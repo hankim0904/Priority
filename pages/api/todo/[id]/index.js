@@ -1,5 +1,6 @@
 import dbConnect from '@/db/dbConnect';
 import Todo from '../../../../db/models/Todo';
+import { getMaxIndex, updateTodoIndex } from './utils';
 
 export default async function handler(req, res) {
   await dbConnect();
@@ -13,7 +14,7 @@ export default async function handler(req, res) {
 
     case 'PATCH':
       let newIndex = req.body.newIndex;
-      const isDone = req.body.isDone;
+      const isDoneInput = req.body.isDone;
 
       const todo = await Todo.findById(id);
       if (!todo) {
@@ -21,35 +22,44 @@ export default async function handler(req, res) {
         return;
       }
 
-      if (isDone) {
-        const maxIndex = await Todo.find()
-          .sort('-index')
-          .limit(1)
-          .then((todos) => (todos.length > 0 ? todos[0].index : 0));
-        newIndex = maxIndex;
-      } else if (isDone === false) {
-        const maxNotDoneIndex = await Todo.find({ isDone: false })
-          .sort('-index')
-          .limit(1)
-          .then((todos) => (todos.length > 0 ? todos[0].index : 0));
+      const maxDoneIndex = await getMaxIndex(true);
+      const maxNotDoneIndex = await getMaxIndex(false);
+
+      if (isDoneInput === undefined) {
+        if (newIndex > maxDoneIndex && maxDoneIndex !== 0) {
+          res.status(200).send(todo);
+          return;
+        }
+        if (newIndex > maxNotDoneIndex) {
+          res.status(200).send(todo);
+          return;
+        }
+      }
+
+      if (todo.isDone === true && newIndex < maxNotDoneIndex) {
+        res.status(200).send(todo);
+        return;
+      }
+
+      if (isDoneInput === false) {
         newIndex = maxNotDoneIndex + 1;
       }
 
       if (newIndex > todo.index) {
-        await Todo.updateMany(
+        await updateTodoIndex(
           { index: { $gt: todo.index, $lte: newIndex } },
-          { $inc: { index: -1 } }
+          -1
         );
       } else if (newIndex < todo.index) {
-        await Todo.updateMany(
+        await updateTodoIndex(
           { index: { $lt: todo.index, $gte: newIndex } },
-          { $inc: { index: 1 } }
+          1
         );
       }
 
       todo.index = newIndex;
-      if (isDone !== undefined) {
-        todo.isDone = isDone;
+      if (isDoneInput !== undefined) {
+        todo.isDone = isDoneInput;
       }
       await todo.save();
 

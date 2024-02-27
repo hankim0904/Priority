@@ -16,7 +16,7 @@ import {
   TodoListData,
   getTodoList,
   patchTodo,
-} from '../util';
+} from '../utils';
 import { useEffect, useRef, useState } from 'react';
 
 const cx = classNames.bind(styles);
@@ -128,6 +128,9 @@ export const CardList = () => {
                   backgroundColor={todo.backgroundColor}
                   activeId={activeId}
                   todoListLength={todoList.length}
+                  todoListNotDoneLength={
+                    todoList.filter((todo) => !todo.isDone).length
+                  }
                   isDone={todo.isDone}
                   setActiveId={setActiveId}
                   patchTodoMutation={patchTodoMutation.mutate}

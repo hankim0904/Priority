@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { QUERY_KEYS, deleteTodo } from '../util';
+import { QUERY_KEYS, deleteTodo } from '../utils';
 
 import styles from './MenuBar.module.scss';
 import classNames from 'classnames/bind';

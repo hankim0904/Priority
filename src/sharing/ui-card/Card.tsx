@@ -4,7 +4,7 @@ import styles from './Card.module.scss';
 import classNames from 'classnames/bind';
 import { Draggable } from 'react-beautiful-dnd';
 import { MenuBar } from '../feat-menu-bar/MenuBar';
-import { ChangedTodo } from '../util';
+import { ChangedTodo } from '../utils';
 
 const cx = classNames.bind(styles);
 
@@ -16,6 +16,7 @@ interface CardProp {
   backgroundColor: string;
   activeId: string;
   todoListLength: number;
+  todoListNotDoneLength: number;
   isDone: boolean;
   setActiveId: (id: string) => void;
   patchTodoMutation: (changedTodo: ChangedTodo) => void;
@@ -29,6 +30,7 @@ export const Card = ({
   backgroundColor,
   activeId,
   todoListLength,
+  todoListNotDoneLength,
   isDone,
   setActiveId,
   patchTodoMutation,
@@ -44,8 +46,8 @@ export const Card = ({
     const changedTodo: ChangedTodo = {
       todoId: id,
       oldIndex: index,
-      newIndex: todoListLength - 1,
       isDone: !isDone,
+      newIndex: !isDone ? todoListLength - 1 : todoListNotDoneLength,
     };
     patchTodoMutation(changedTodo);
   };
