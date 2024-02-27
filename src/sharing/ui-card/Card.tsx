@@ -1,8 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import styles from './Card.module.scss';
 import classNames from 'classnames/bind';
 import { Draggable } from 'react-beautiful-dnd';
+import { MenuBar } from '../feat-menu-bar/MenuBar';
+import { ChangedTodo } from '../utils';
 
 const cx = classNames.bind(styles);
 
@@ -12,6 +14,12 @@ interface CardProp {
   title: string;
   color: string;
   backgroundColor: string;
+  activeId: string;
+  todoListLength: number;
+  todoListNotDoneLength: number;
+  isDone: boolean;
+  setActiveId: (id: string) => void;
+  patchTodoMutation: (changedTodo: ChangedTodo) => void;
 }
 
 export const Card = ({
@@ -20,8 +28,29 @@ export const Card = ({
   title,
   color,
   backgroundColor,
+  activeId,
+  todoListLength,
+  todoListNotDoneLength,
+  isDone,
+  setActiveId,
+  patchTodoMutation,
 }: CardProp) => {
   const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setActiveId(id);
+  };
+
+  const handleNumberClick = () => {
+    const changedTodo: ChangedTodo = {
+      todoId: id,
+      oldIndex: index,
+      isDone: !isDone,
+      newIndex: !isDone ? todoListLength - 1 : todoListNotDoneLength,
+    };
+    patchTodoMutation(changedTodo);
+  };
 
   useEffect(() => {
     cardRef.current?.style.setProperty('--random-color', color);
@@ -35,12 +64,32 @@ export const Card = ({
     <Draggable draggableId={id} index={index}>
       {(provided) => (
         <article
+          className={cx('card')}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
+          onClick={handleCardClick}
         >
-          <div className={cx('card')} ref={cardRef}>
-            <p className={cx('card-content')}>{title}</p>
+          <div
+            className={cx('card-container', { active: id === activeId })}
+            ref={cardRef}
+          >
+            <div className={cx('card-element')}>
+              <button
+                className={cx('card-element-number')}
+                type="button"
+                onClick={handleNumberClick}
+              >
+                {isDone ? <span>✓</span> : <span>{index + 1}</span>}
+              </button>
+              <button
+                className={cx('card-element-content', { done: isDone })}
+                type="button"
+              >
+                <p>{title}</p>
+              </button>
+            </div>
+            <MenuBar todoId={id} />
           </div>
         </article>
       )}

@@ -7,6 +7,7 @@ const todoSchema = new mongoose.Schema(
     color: { type: String, default: '' },
     backgroundColor: { type: String, default: '' },
     index: { type: Number, default: 0 },
+    isDone: { type: Boolean, default: false },
   },
   {
     timestamps: true,

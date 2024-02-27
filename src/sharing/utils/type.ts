@@ -4,6 +4,7 @@ export interface NewTodo {
 }
 
 export interface Todo {
+  isDone: boolean;
   _id: string;
   index: number;
   title: string;
@@ -12,18 +13,14 @@ export interface Todo {
   backgroundColor: string;
 }
 
-export interface TodoPage {
+export interface TodoListData {
   todos: Todo[];
   cursorIndex: string | null;
   totalCount: number;
 }
 
-export interface TodoPages {
-  pages: TodoPage[];
-  pageParams: (number | null)[];
-}
-
 export interface ChangedTodo {
+  isDone?: boolean;
   todoId: string;
   oldIndex: number;
   newIndex: number;

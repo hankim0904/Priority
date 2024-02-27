@@ -1,19 +1,53 @@
 .card {
-  @include text-style(2.4, 700);
-  color: var(--random-color);
-  background-color: var(--random-background-color);
-  width: 20rem;
-  height: calc(2.4rem * 6 + 1.5rem * 2);
-  padding: 1.5rem;
-  border-radius: 0.6rem;
-  overflow: hidden;
-  line-height: 2.4rem;
+  width: 100%;
 
-  &-content {
+  &-container {
+    @include flexbox(between);
+    width: 100%;
+    gap: 3rem;
+    padding: 3rem;
+    border-radius: 3.6rem;
     overflow: hidden;
-    display: -webkit-box;
-    word-break: break-all;
-    -webkit-line-clamp: 6;
-    -webkit-box-orient: vertical;
+    background-color: $white;
+    box-shadow: 0 17px 20px -18px rgba(0, 0, 0, 0.1);
+    border: 0.2rem solid $gray-200;
+
+    &:active,
+    &.active {
+      border: 0.2rem solid var(--random-color);
+    }
+  }
+
+  &-element {
+    @include flexbox(start);
+    gap: 3rem;
+
+    &-number {
+      @include text-style(3.6, 900);
+      @include flexbox();
+      border-radius: 50%;
+      color: var(--random-color);
+      background-color: var(--random-background-color);
+      width: 8rem;
+      height: 8rem;
+    }
+
+    &-content {
+      @include text-style(3, 700, $black-100);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      word-break: break-all;
+      max-width: 60rem;
+
+      &.done {
+        text-decoration: line-through;
+        color: $gray-400;
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 
-import { NewTodo, QUERY_KEYS, postTodo } from '@/src/sharing/util';
+import { NewTodo, QUERY_KEYS, postTodo } from '@/src/sharing/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import styles from './Header.module.scss';
@@ -8,7 +8,7 @@ import classNames from 'classnames/bind';
 
 import { Input } from '@/src/sharing/ui-input';
 import { PriorityLogo } from '../PriorityLogo/PriorityLogo';
-import { INPUT_PLACEHOLDER } from '@/src/sharing/util/constant';
+import { INPUT_PLACEHOLDER } from '@/src/sharing/utils/constant';
 import { createNewTodo } from './createNewTodo';
 
 const cx = classNames.bind(styles);

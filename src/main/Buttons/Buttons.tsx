@@ -2,7 +2,7 @@ import styles from './Buttons.module.scss';
 import classNames from 'classnames/bind';
 
 import { Button } from '@/src/sharing/ui-button/Button';
-import { BUTTON_CONTENT, BUTTON_ICON } from '@/src/sharing/util/constant';
+import { BUTTON_CONTENT, BUTTON_ICON } from '@/src/sharing/utils/constant';
 
 const cx = classNames.bind(styles);
 
