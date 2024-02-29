@@ -34,11 +34,13 @@
 
     &-content {
       @include text-style(3, 700, $black-100);
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      word-break: break-all;
-      max-width: 60rem;
+
+      p {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 60rem;
+      }
 
       &.done {
         text-decoration: line-through;

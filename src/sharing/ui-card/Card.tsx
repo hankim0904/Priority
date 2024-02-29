@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import styles from './Card.module.scss';
 import classNames from 'classnames/bind';
+
+import { useCardId } from '@/src/context/FocusedCardIdContext';
 import { Draggable } from 'react-beautiful-dnd';
 import { MenuBar } from '../feat-menu-bar/MenuBar';
-import { ChangedTodo } from '../utils';
+import { ChangedIndex } from '../utils';
 
 const cx = classNames.bind(styles);
 
@@ -19,7 +21,7 @@ interface CardProp {
   todoListNotDoneLength: number;
   isDone: boolean;
   setActiveId: (id: string) => void;
-  patchTodoMutation: (changedTodo: ChangedTodo) => void;
+  patchTodoMutation: (changedTodo: ChangedIndex) => void;
 }
 
 export const Card = ({
@@ -36,6 +38,8 @@ export const Card = ({
   patchTodoMutation,
 }: CardProp) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const { focusedCardId, setFocusedCardId } = useCardId();
+  const focusedCardRef = useRef<HTMLDivElement>(null);
 
   const handleCardClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -43,7 +47,7 @@ export const Card = ({
   };
 
   const handleNumberClick = () => {
-    const changedTodo: ChangedTodo = {
+    const changedTodo: ChangedIndex = {
       todoId: id,
       oldIndex: index,
       isDone: !isDone,
@@ -60,6 +64,15 @@ export const Card = ({
     );
   }, [backgroundColor, color]);
 
+  useEffect(() => {
+    if (focusedCardId && focusedCardRef.current) {
+      focusedCardRef.current.scrollIntoView({
+        behavior: 'smooth',
+      });
+      setFocusedCardId('');
+    }
+  }, [focusedCardId, setFocusedCardId]);
+
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -74,7 +87,10 @@ export const Card = ({
             className={cx('card-container', { active: id === activeId })}
             ref={cardRef}
           >
-            <div className={cx('card-element')}>
+            <div
+              className={cx('card-element')}
+              ref={id === focusedCardId ? focusedCardRef : undefined}
+            >
               <button
                 className={cx('card-element-number')}
                 type="button"

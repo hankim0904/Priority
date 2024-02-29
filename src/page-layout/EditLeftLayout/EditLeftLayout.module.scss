@@ -1,0 +1,14 @@
+.edit-left {
+  @include column-flexbox(center, stretch);
+  height: 100%;
+
+  &-container {
+    height: 100%;
+    overflow: auto;
+    padding: 5rem;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}

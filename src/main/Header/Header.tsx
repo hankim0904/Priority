@@ -1,25 +1,29 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 
-import { NewTodo, QUERY_KEYS, postTodo } from '@/src/sharing/utils';
+import { postTodo } from '@/src/api/api';
+import { NewTodo, QUERY_KEYS } from '@/src/sharing/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import styles from './Header.module.scss';
 import classNames from 'classnames/bind';
 
+import { useCardId } from '@/src/context/FocusedCardIdContext';
 import { Input } from '@/src/sharing/ui-input';
 import { PriorityLogo } from '../PriorityLogo/PriorityLogo';
 import { INPUT_PLACEHOLDER } from '@/src/sharing/utils/constant';
-import { createNewTodo } from './createNewTodo';
+import { createNewTodo } from '../../sharing/utils/createNewTodo';
 
 const cx = classNames.bind(styles);
 
 export const Header = () => {
   const queryClient = useQueryClient();
   const [titleInput, setTitleInput] = useState<string>('');
+  const { setFocusedCardId } = useCardId();
 
   const postTodoMutation = useMutation({
     mutationFn: (newTodo: NewTodo) => postTodo(newTodo),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setFocusedCardId(data._id);
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.TODOS],
       });

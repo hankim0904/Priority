@@ -1,0 +1,21 @@
+.nav {
+  @include flexbox(between);
+  height: 8rem;
+  padding: 2rem;
+  box-shadow: 0 5px 18px -7px rgba(0, 0, 0, 1);
+
+  &-btn {
+    @include flexbox();
+
+    &.write {
+      @include text-style(2.5, 700, $white);
+      background-color: $skyblue-300;
+      border-radius: 0.6rem;
+      padding: 1rem 2rem;
+    }
+
+    span {
+      @include text-style(2.5, 400);
+    }
+  }
+}

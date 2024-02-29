@@ -5,10 +5,10 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-interface LayoutProps {
+interface MainRightLayoutProps {
   cardList: ReactNode;
 }
 
-export const MainRightLayout = ({ cardList }: LayoutProps) => {
+export const MainRightLayout = ({ cardList }: MainRightLayoutProps) => {
   return <div className={cx('main-right')}>{cardList}</div>;
 };
