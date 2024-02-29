@@ -1,5 +1,8 @@
+import { useRouter } from 'next/router';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { QUERY_KEYS, deleteTodo } from '../utils';
+import { deleteTodo } from '@/src/api/api';
+import { QUERY_KEYS } from '../utils';
 
 import styles from './MenuBar.module.scss';
 import classNames from 'classnames/bind';
@@ -14,6 +17,8 @@ interface MenuBarProps {
 }
 
 export const MenuBar = ({ todoId }: MenuBarProps) => {
+  const router = useRouter();
+
   const queryClient = useQueryClient();
   const { mutate: deleteTodoMutate } = useMutation({
     mutationFn: () => deleteTodo(todoId),
@@ -24,6 +29,10 @@ export const MenuBar = ({ todoId }: MenuBarProps) => {
     },
   });
 
+  const handleEditClick = () => {
+    router.push(`edit/${todoId}`);
+  };
+
   const handleDeleteClick = () => {
     deleteTodoMutate();
   };
@@ -32,6 +41,7 @@ export const MenuBar = ({ todoId }: MenuBarProps) => {
     <div className={cx('menubar')}>
       {menuElementList.map((menuElement) => {
         let onClickFunction;
+        if (menuElement.id === 0) onClickFunction = handleEditClick;
         if (menuElement.id === 2) onClickFunction = handleDeleteClick;
         return (
           <button

@@ -5,12 +5,12 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-interface LayoutProps {
+interface MainLeftLayoutProps {
   header: ReactNode;
   buttons: ReactNode;
 }
 
-export const MainLeftLayout = ({ header, buttons }: LayoutProps) => {
+export const MainLeftLayout = ({ header, buttons }: MainLeftLayoutProps) => {
   return (
     <div className={cx('main-left')}>
       {header}

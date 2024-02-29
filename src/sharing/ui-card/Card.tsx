@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import styles from './Card.module.scss';
 import classNames from 'classnames/bind';
+
+import { useCardId } from '@/src/context/FocusedCardIdContext';
 import { Draggable } from 'react-beautiful-dnd';
 import { MenuBar } from '../feat-menu-bar/MenuBar';
 import { ChangedTodo } from '../utils';
@@ -36,6 +38,8 @@ export const Card = ({
   patchTodoMutation,
 }: CardProp) => {
   const cardRef = useRef<HTMLDivElement>(null);
+  const { focusedCardId } = useCardId();
+  const focusedCardRef = useRef<HTMLDivElement>(null);
 
   const handleCardClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -60,6 +64,14 @@ export const Card = ({
     );
   }, [backgroundColor, color]);
 
+  useEffect(() => {
+    if (focusedCardId && focusedCardRef.current) {
+      focusedCardRef.current.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }
+  }, [focusedCardId]);
+
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -74,7 +86,10 @@ export const Card = ({
             className={cx('card-container', { active: id === activeId })}
             ref={cardRef}
           >
-            <div className={cx('card-element')}>
+            <div
+              className={cx('card-element')}
+              ref={id === focusedCardId ? focusedCardRef : undefined}
+            >
               <button
                 className={cx('card-element-number')}
                 type="button"

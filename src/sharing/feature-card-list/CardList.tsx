@@ -10,13 +10,8 @@ import styles from './CardList.module.scss';
 import classNames from 'classnames/bind';
 
 import { Card } from '../ui-card/Card';
-import {
-  ChangedTodo,
-  QUERY_KEYS,
-  TodoListData,
-  getTodoList,
-  patchTodo,
-} from '../utils';
+import { getTodoList, patchIndex } from '@/src/api/api';
+import { ChangedTodo, QUERY_KEYS, TodoListData } from '../utils';
 import { useEffect, useRef, useState } from 'react';
 
 const cx = classNames.bind(styles);
@@ -38,7 +33,7 @@ export const CardList = () => {
   const todoList = todoListData?.todos ?? [];
 
   const patchTodoMutation = useMutation({
-    mutationFn: (changedTodo: ChangedTodo) => patchTodo(changedTodo),
+    mutationFn: (changedTodo: ChangedTodo) => patchIndex(changedTodo),
     onMutate: async (changedTodo: ChangedTodo) => {
       await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.TODOS] });
       const prevTodoListData = queryClient.getQueryData<TodoListData>([

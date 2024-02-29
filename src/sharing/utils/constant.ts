@@ -13,4 +13,13 @@ export const BUTTON_CONTENT = {
   HISTORY: 'History',
 };
 
+export const PAGE_PATH = {
+  MAIN: '/',
+  EDIT: '/edit',
+};
+
 export const TODO_PER_PAGE = 10;
+
+export const IMGBB_API_KEY = '9b44d68d4291f77e1ddd2b63d2ce5b03';
+
+export const IMGBB_URL = `https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`;

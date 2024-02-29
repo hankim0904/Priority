@@ -19,9 +19,15 @@ export interface TodoListData {
   totalCount: number;
 }
 
-export interface ChangedTodo {
+export interface ChangedIndex {
   isDone?: boolean;
   todoId: string;
   oldIndex: number;
   newIndex: number;
+}
+
+export interface ChangedTodo {
+  todoId: string | string[];
+  title: string;
+  content: string;
 }

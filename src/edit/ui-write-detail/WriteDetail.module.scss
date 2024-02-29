@@ -1,0 +1,28 @@
+.write {
+  height: 100%;
+  border-radius: 1.6vh;
+  overflow: hidden;
+}
+
+// .wmde-markdown {
+//   :global(.w-md-editor-toolbar) {
+//     padding: 2rem;
+//     ul {
+//       @include flexbox();
+//       gap: 1rem;
+//     }
+//     svg {
+//       width: 3rem;
+//       height: 3rem;
+//     }
+//   }
+
+//   :global(.w-md-editor-content) {
+//     padding: 1rem;
+//     font-size: 3rem !important;
+
+//     textarea {
+//       font-size: 3rem !important;
+//     }
+//   }
+// }
