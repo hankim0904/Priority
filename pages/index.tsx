@@ -1,4 +1,5 @@
 import React from 'react';
+<<<<<<< HEAD
 import { Layout } from '@/src/sharing/ui-layout';
 import { MainLeftLayout } from '@/src/page-layout/MainLeftLayout';
 import { Header } from '@/src/main/Header/Header';
@@ -15,4 +16,10 @@ export default function Home() {
       rightComponent={<MainRightLayout cardList={<CardList />} />}
     />
   );
+=======
+import { Layout } from '@/src/sharing/feature-layout';
+
+export default function Home() {
+  return <Layout />;
+>>>>>>> main
 }

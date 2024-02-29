@@ -21,8 +21,13 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+<<<<<<< HEAD
     "src/sharing/ui-layout/index.js",
     "src/page-layout/MainLeftLayout/index.js"
+=======
+    "src/sharing/feature-layout/index.js",
+    "src/page-layout/MainLayout/index.js"
+>>>>>>> main
   ],
   "exclude": ["node_modules"]
 }
