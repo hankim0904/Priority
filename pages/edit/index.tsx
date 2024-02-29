@@ -16,11 +16,11 @@ export default function Edit() {
     <Layout
       leftComponent={
         <EditLeftLayout
-          nav={<NavBar />}
           writeTitle={<WriteTitle title={title} setTitle={setTitle} />}
           writeDetail={
             <WriteDetail content={content} setContent={setContent} />
           }
+          nav={<NavBar />}
           title={title}
           content={content}
         />

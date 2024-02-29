@@ -1,6 +1,8 @@
 export const INPUT_PLACEHOLDER = {
   TODO: '할 일을 입력하고 우선순위를 정해보세요',
   SEARCH: '떠올리고 싶은 일을 검색해 주세요',
+  TITLE: '제목을 입력하세요',
+  DETAIL: '오늘의 할 일은 무엇인가요?',
 };
 
 export const BUTTON_ICON = {
@@ -16,6 +18,7 @@ export const BUTTON_CONTENT = {
 export const PAGE_PATH = {
   MAIN: '/',
   EDIT: '/edit',
+  POST: '/post',
 };
 
 export const TODO_PER_PAGE = 10;

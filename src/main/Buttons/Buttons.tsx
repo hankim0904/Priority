@@ -25,6 +25,7 @@ export const Buttons = () => {
         type="button"
         icon={BUTTON_ICON.HISTORY}
         content={BUTTON_CONTENT.HISTORY}
+        onClick={() => router.push(PAGE_PATH.POST)}
       />
     </p>
   );

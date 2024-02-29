@@ -10,6 +10,7 @@ import { patchTodo, postTodo } from '@/src/api/api';
 
 import styles from './EditLeftLayout.module.scss';
 import classNames from 'classnames/bind';
+
 import { createNewTodo } from '@/src/sharing/utils/createNewTodo';
 import { useRouter } from 'next/router';
 import { useCardId } from '@/src/context/FocusedCardIdContext';
@@ -49,7 +50,8 @@ export const EditLeftLayout = ({
 
   const patchTodoMutation = useMutation({
     mutationFn: (changedTodo: ChangedTodo) => patchTodo(changedTodo),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setFocusedCardId(data._id);
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.TODOS],
       });
@@ -69,10 +71,12 @@ export const EditLeftLayout = ({
   };
 
   return (
-    <form className={cx('edit-right')} onSubmit={handleFormSubmit}>
+    <form className={cx('edit-left')} onSubmit={handleFormSubmit}>
+      <div className={cx('edit-left-container')}>
+        {writeTitle}
+        {writeDetail}
+      </div>
       {nav}
-      {writeTitle}
-      {writeDetail}
     </form>
   );
 };

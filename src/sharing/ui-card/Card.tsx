@@ -6,7 +6,7 @@ import classNames from 'classnames/bind';
 import { useCardId } from '@/src/context/FocusedCardIdContext';
 import { Draggable } from 'react-beautiful-dnd';
 import { MenuBar } from '../feat-menu-bar/MenuBar';
-import { ChangedTodo } from '../utils';
+import { ChangedIndex } from '../utils';
 
 const cx = classNames.bind(styles);
 
@@ -21,7 +21,7 @@ interface CardProp {
   todoListNotDoneLength: number;
   isDone: boolean;
   setActiveId: (id: string) => void;
-  patchTodoMutation: (changedTodo: ChangedTodo) => void;
+  patchTodoMutation: (changedTodo: ChangedIndex) => void;
 }
 
 export const Card = ({
@@ -38,7 +38,7 @@ export const Card = ({
   patchTodoMutation,
 }: CardProp) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const { focusedCardId } = useCardId();
+  const { focusedCardId, setFocusedCardId } = useCardId();
   const focusedCardRef = useRef<HTMLDivElement>(null);
 
   const handleCardClick = (e: React.MouseEvent) => {
@@ -47,7 +47,7 @@ export const Card = ({
   };
 
   const handleNumberClick = () => {
-    const changedTodo: ChangedTodo = {
+    const changedTodo: ChangedIndex = {
       todoId: id,
       oldIndex: index,
       isDone: !isDone,
@@ -69,8 +69,9 @@ export const Card = ({
       focusedCardRef.current.scrollIntoView({
         behavior: 'smooth',
       });
+      setFocusedCardId('');
     }
-  }, [focusedCardId]);
+  }, [focusedCardId, setFocusedCardId]);
 
   return (
     <Draggable draggableId={id} index={index}>
