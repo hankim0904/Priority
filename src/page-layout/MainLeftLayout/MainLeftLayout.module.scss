@@ -1,0 +1,10 @@
+.main-left {
+  @include column-flexbox();
+  gap: 20rem;
+  height: 100%;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

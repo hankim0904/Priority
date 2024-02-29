@@ -1,0 +1,11 @@
+.edit-right {
+  @include column-flexbox(start, stretch);
+  gap: 5rem;
+  height: 100%;
+  padding: 5rem;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -1,0 +1,4 @@
+.header {
+  @include column-flexbox();
+  gap: 5rem;
+}

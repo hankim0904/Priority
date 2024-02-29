@@ -1,0 +1,9 @@
+.container {
+  width: 100%;
+  padding: 10rem;
+}
+
+.todo-list {
+  @include column-flexbox();
+  gap: 3rem;
+}
